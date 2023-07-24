@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +20,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
 		user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
-        System.out.println(user);
         // Sending a generic response which consists of status and data
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/edit-profile")
+    public ResponseEntity<User> editProfile(@RequestBody User user){
+        return  new ResponseEntity<>(userService.editProfile(user), HttpStatus.ACCEPTED);
     }
 }
