@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Base64;
+
 @RestController
 @RequestMapping("/user")
 public class CommonController {
@@ -16,8 +19,7 @@ public class CommonController {
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
-        // todo: uncomment this line to encode the password
-        //user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
+        user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
         // Sending a generic response which consists of status and data
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
@@ -34,5 +36,10 @@ public class CommonController {
     @PutMapping("/edit-profile")
     public ResponseEntity<User> editProfile(@RequestBody User user){
         return  new ResponseEntity<>(userService.editProfile(user), HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/edit-password")
+    public ResponseEntity<User> editPassword(@RequestBody User user){
+        return  new ResponseEntity<>(userService.editPassword(user), HttpStatus.ACCEPTED);
     }
 }

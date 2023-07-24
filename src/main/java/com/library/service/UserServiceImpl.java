@@ -39,12 +39,18 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public User editPassword(User user) {
+        User userFromDb = findByEmail(user.getEmail());
+        userFromDb.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
+        userRepository.save(userFromDb);
+        return userFromDb;
+    }
+
+    @Override
     public User login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail());
-
         if (user != null && (new String(Base64.getDecoder().decode(user.getPassword().getBytes())).equals(loginDto.getPassword()))) {
             return user;
-
         }
         return null;
     }

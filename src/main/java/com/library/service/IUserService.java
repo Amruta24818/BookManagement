@@ -16,5 +16,7 @@ public interface IUserService {
 
     User login(LoginDto loginDto);
 
+    User editPassword(User user);
+
 
 }
