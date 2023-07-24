@@ -1,27 +1,34 @@
 package com.library.controller;
 
+import com.library.dto.LoginDto;
 import com.library.model.User;
 import com.library.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Base64;
+import org.springframework.web.bind.annotation.*;
 @RestController
-public class UserController {
+@RequestMapping("/user")
+public class CommonController {
 
     @Autowired
     private IUserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
-		user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
+        // todo: uncomment this line to encode the password
+        //user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
         // Sending a generic response which consists of status and data
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<User> signinUser(@RequestBody LoginDto loginDto) {
+        User user = userService.login(loginDto);
+        if(user != null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/edit-profile")
