@@ -19,7 +19,7 @@ public class Book {
 	private String name;
 	
 	@Column
-	private String subject;
+	private String author;
 	
 	@Column
 	private double price;
@@ -31,11 +31,11 @@ public class Book {
 		super();
 	}
 
-	public Book(Integer bookId, String name, String subject, double price, long isbn) {
+	public Book(Integer bookId, String name, String author, double price, long isbn) {
 		super();
 		this.bookId = bookId;
 		this.name = name;
-		this.subject = subject;
+		this.author = author;
 		this.price = price;
 		this.isbn = isbn;
 	}
@@ -56,12 +56,12 @@ public class Book {
 		this.name = name;
 	}
 
-	public String getSubject() {
-		return subject;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 	public double getPrice() {
@@ -82,7 +82,7 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [bookId=" + bookId + ", name=" + name + ", subject=" + subject + ", price=" + price + ", isbn="
+		return "Book [bookId=" + bookId + ", name=" + name + ", subject=" + author + ", price=" + price + ", isbn="
 				+ isbn + "]";
 	}
 		

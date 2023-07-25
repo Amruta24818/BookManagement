@@ -21,14 +21,18 @@ public class BookServiceImpl implements IBookService{
         bookRepository.deleteById(bookId);
         Book book = findBookById(bookId);
         if(book != null){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
     public Book findBookById(int bookId) {
-        return bookRepository.findById(bookId).get();
+        try{
+            return bookRepository.findById(bookId).get();
+        }catch(Exception e) {
+            return null;
+        }
     }
 
     @Override

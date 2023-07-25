@@ -19,7 +19,7 @@ public class LibrarianController {
         return new ResponseEntity<>(bookService.addBook(book), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete-book")
+    @DeleteMapping("/delete-book/{bookId}")
     public ResponseEntity<String> deleteBookById(@PathVariable int bookId){
         if(bookService.deleteById(bookId)){
             return new ResponseEntity<>("Book Deleted successfully", HttpStatus.OK);
@@ -29,7 +29,7 @@ public class LibrarianController {
         }
     }
 
-    @GetMapping("/find-book")
+    @GetMapping("/find-book/{bookName}")
     public ResponseEntity<Book> findBook(@PathVariable String bookName){
         return new ResponseEntity<>(bookService.findBookByName(bookName), HttpStatus.CREATED);
     }

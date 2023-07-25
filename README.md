@@ -14,6 +14,7 @@ Common functionality
 
 User Functionality
 1. Check fine
+2. Return book
 
 Librarian Functionality
 
