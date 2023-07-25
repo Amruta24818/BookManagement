@@ -18,5 +18,6 @@ public interface IUserService {
 
     User editPassword(User user);
 
+    User findByUserId(int userId);
 
 }

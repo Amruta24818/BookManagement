@@ -54,4 +54,9 @@ public class UserServiceImpl implements IUserService {
         }
         return null;
     }
+
+    @Override
+    public User findByUserId(int userId) {
+        return userRepository.findById(userId).get();
+    }
 }

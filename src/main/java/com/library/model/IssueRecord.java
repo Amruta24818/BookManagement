@@ -38,6 +38,16 @@ public class IssueRecord {
 	@JoinColumn(name = "bookId")
 	private Book bookId;
 
+	public IssueRecord( LocalDate returnDate, LocalDate issueDate,
+					   Integer amount, User userId, Book bookId) {
+		super();
+		this.returnDate = returnDate;
+		this.issueDate = issueDate;
+		Amount = amount;
+		this.userId = userId;
+		this.bookId = bookId;
+	}
+
 	public IssueRecord(Integer issueRecordId, LocalDate returnDate, LocalDate issueDate,
 			Integer amount, User userId, Book bookId) {
 		super();
