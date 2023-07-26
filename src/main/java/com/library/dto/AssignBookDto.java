@@ -1,28 +1,31 @@
 package com.library.dto;
 
+import com.library.model.User;
+
 public class AssignBookDto {
 
-    private int userId;
+    private User user;
     private String bookName;
 
-    public AssignBookDto(int userId, String bookName) {
-        this.userId = userId;
+    public AssignBookDto(User user, String bookName) {
+        this.user = user;
         this.bookName = bookName;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getBookName() {
         return bookName;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public void setBookName(String bookName) {
         this.bookName = bookName;
     }
+
 }

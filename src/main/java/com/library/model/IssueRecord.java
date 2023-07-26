@@ -2,15 +2,10 @@ package com.library.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.mapping.ToOne;
 
 @Entity
 public class IssueRecord {
@@ -20,7 +15,6 @@ public class IssueRecord {
 	private Integer issueRecordId;
 	
 	@Column
-	@CreationTimestamp
 	private LocalDate returnDate;
 	
 	@Column
@@ -30,11 +24,11 @@ public class IssueRecord {
 	@Column
 	private Integer Amount;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User userId;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "bookId")
 	private Book bookId;
 
