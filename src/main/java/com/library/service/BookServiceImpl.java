@@ -11,6 +11,10 @@ public class BookServiceImpl implements IBookService{
     @Autowired
     private BookRepository bookRepository;
 
+    public BookServiceImpl(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
     @Override
     public Book addBook(Book book) {
         return bookRepository.save(book);
@@ -29,7 +33,7 @@ public class BookServiceImpl implements IBookService{
     @Override
     public Book findBookById(int bookId) {
         try{
-            return bookRepository.findById(bookId).get();
+            return (Book) bookRepository.findById(bookId).get();
         }catch(Exception e) {
             return null;
         }

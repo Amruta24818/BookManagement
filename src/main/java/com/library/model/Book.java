@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 @Entity
 public class Book {
 	@Id
@@ -85,6 +87,17 @@ public class Book {
 		return "Book [bookId=" + bookId + ", name=" + name + ", subject=" + author + ", price=" + price + ", isbn="
 				+ isbn + "]";
 	}
-		
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Book book = (Book) o;
+		return Double.compare(book.price, price) == 0 && isbn == book.isbn && Objects.equals(bookId, book.bookId) && name.equals(book.name) && Objects.equals(author, book.author);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(bookId, name, author, price, isbn);
+	}
 }

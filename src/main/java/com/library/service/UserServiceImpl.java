@@ -21,6 +21,11 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IssueRecordRepository issueRecordRepository;
 
+    public UserServiceImpl(UserRepository userRepository, IssueRecordRepository issueRecordRepository) {
+        this.userRepository = userRepository;
+        this.issueRecordRepository = issueRecordRepository;
+    }
+
     @Override
     public User registerUser(User user) {
         return userRepository.save(user);
@@ -30,8 +35,7 @@ public class UserServiceImpl implements IUserService {
     public User editProfile(User user) {
         User userFromDb = findByEmail(user.getEmail());
         userFromDb.setMobNo(user.getMobNo());
-        userRepository.save(userFromDb);
-        return null;
+        return userRepository.save(userFromDb);
     }
 
     @Override
@@ -69,13 +73,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<IssueRecord> getFineReport(int userId) {
         List<IssueRecord> list = issueRecordRepository.findAll();
-        list.forEach(System.out::println);
         List<IssueRecord> record = list.stream()
                 .filter(records -> records.getAmount() > 0 && records.getUserId().getUserId()
                         .equals(userId))
                 .collect(Collectors.toList());
-        System.out.println("record list");
-        record.forEach(System.out::println);
         return record;
     }
 }
