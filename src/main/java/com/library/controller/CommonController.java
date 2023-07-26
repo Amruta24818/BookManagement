@@ -1,7 +1,9 @@
 package com.library.controller;
 
 import com.library.dto.LoginDto;
+import com.library.model.IssueRecord;
 import com.library.model.User;
+import com.library.model.UserRole;
 import com.library.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -20,6 +23,7 @@ public class CommonController {
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
+        user.setRole(UserRole.USER);
         // Sending a generic response which consists of status and data
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
@@ -41,5 +45,10 @@ public class CommonController {
     @PutMapping("/edit-password")
     public ResponseEntity<User> editPassword(@RequestBody User user){
         return  new ResponseEntity<>(userService.editPassword(user), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/get-all-fine/{userId}")
+    public ResponseEntity<List<IssueRecord>> getAllFineRecords(@PathVariable int userId){
+        return new ResponseEntity<>(userService.getFineReport(userId), HttpStatus.CREATED);
     }
 }

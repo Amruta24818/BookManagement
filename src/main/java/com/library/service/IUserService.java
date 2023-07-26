@@ -1,6 +1,7 @@
 package com.library.service;
 
 import com.library.dto.LoginDto;
+import com.library.model.IssueRecord;
 import com.library.model.User;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface IUserService {
     User editPassword(User user);
 
     User findByUserId(int userId);
+
+    List<IssueRecord> getFineReport(int userId);
 
 }
