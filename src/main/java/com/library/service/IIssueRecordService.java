@@ -2,6 +2,7 @@ package com.library.service;
 
 import com.library.dto.AssignBookDto;
 import com.library.model.IssueRecord;
+import com.library.model.User;
 
 import java.util.List;
 
@@ -10,5 +11,9 @@ public interface IIssueRecordService {
 
     IssueRecord returnBook(AssignBookDto assignBookDto);
 
-   List<IssueRecord> findByUserId(int userId);
+    List<IssueRecord> findUserInIssueRecords(User user);
+
+    List<IssueRecord> getAllIssueRecord();
+
+    List<IssueRecord> getAllFineRecord();
 }

@@ -18,7 +18,7 @@ public class LibrarianController {
     private IBookService bookService;
 
     @Autowired
-    private IIssueRecordService iIssueRecordService;
+    private IIssueRecordService issueRecordService;
 
     @PostMapping("/add-book")
     public ResponseEntity<Book> addBook(@RequestBody Book book){
@@ -42,11 +42,17 @@ public class LibrarianController {
 
     @PostMapping("/assign-book")
     public ResponseEntity<IssueRecord> assignBook(@RequestBody AssignBookDto assignBookDto){
-        return new ResponseEntity<>(iIssueRecordService.assignBook(assignBookDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(issueRecordService.assignBook(assignBookDto), HttpStatus.CREATED);
     }
 
-    @PostMapping("/return-Book")
-    public ResponseEntity<IssueRecord> returnBook(@RequestBody AssignBookDto assignBookDto){
-        return new ResponseEntity<>(iIssueRecordService.returnBook(assignBookDto), HttpStatus.CREATED);
+    @PostMapping("/return-book")
+    public ResponseEntity<String> returnBook(@RequestBody AssignBookDto assignBookDto){
+        IssueRecord issueRecord = issueRecordService.returnBook(assignBookDto);
+        if(issueRecord != null) {
+            return new ResponseEntity<>("Book returned successfully", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Book is already returned", HttpStatus.OK);
+        }
     }
 }
