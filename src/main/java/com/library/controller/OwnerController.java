@@ -36,7 +36,7 @@ public class OwnerController {
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
 
-    @GetMapping("/get-all-fine-report")
+    @GetMapping("/get-fine-report")
     public ResponseEntity<List<IssueRecord>> getAllFineRecords(){
         return new ResponseEntity<>(issueRecordService.getAllFineRecord(), HttpStatus.CREATED);
     }
