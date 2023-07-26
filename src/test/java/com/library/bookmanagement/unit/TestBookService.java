@@ -21,10 +21,11 @@ public class TestBookService {
     @Test
     public void PositiveAddBook(){
         BookRepository bookRepository  = mock(BookRepository.class);
-        when(bookRepository.save(any())).thenAnswer(book->{
-            return book.getArguments()[0];
-        });
+//        when(bookRepository.save(any())).thenAnswer(book->{
+//            return book.getArguments()[0];
+//        });
         Book book = new Book(1, "let us c", "Yashvant kanetkar", 256, 125896);
+        when(bookRepository.save(book)).thenReturn(book);
         assertEquals(book,bookService.addBook(book));
     }
 }
