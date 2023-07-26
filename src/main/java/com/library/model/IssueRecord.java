@@ -1,6 +1,7 @@
 package com.library.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.persistence.*;
 
@@ -111,7 +112,18 @@ public class IssueRecord {
 				+ returnDate + ", issueDate=" + issueDate + ", Amount=" + Amount + ", userId=" + userId + ", bookId="
 				+ bookId + "]";
 	}
-	
-	
 
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		IssueRecord that = (IssueRecord) o;
+		return Objects.equals(issueRecordId, that.issueRecordId) && Objects.equals(returnDate, that.returnDate) && Objects.equals(issueDate, that.issueDate) && Objects.equals(Amount, that.Amount) && Objects.equals(userId, that.userId) && Objects.equals(bookId, that.bookId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(issueRecordId, returnDate, issueDate, Amount, userId, bookId);
+	}
 }

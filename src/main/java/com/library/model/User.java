@@ -5,6 +5,8 @@ import org.springframework.lang.NonNull;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Objects;
+
 @Entity
 @Table(name="UserTable")
 public class User {
@@ -99,4 +101,11 @@ public class User {
 				+ mobNo + ", role=" + role + "]";
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		User user = (User) o;
+		return Objects.equals(userId, user.userId) && name.equals(user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(mobNo, user.mobNo) && role == user.role;
+	}
 }
