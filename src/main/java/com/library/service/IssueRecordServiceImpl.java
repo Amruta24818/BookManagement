@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,12 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
     @Autowired
     private BookRepository bookRepository;
 
+    public IssueRecordServiceImpl(BookRepository bookRepository, UserRepository userRepository, IssueRecordRepository issueRecordRepository) {
+        this.bookRepository = bookRepository;
+        this.userRepository= userRepository;
+        this.issueRecordRepository = issueRecordRepository;
+    }
+
     @Override
     public IssueRecord assignBook(AssignBookDto assignBookDto) {
         User user = userRepository.findById(assignBookDto.getUser().getUserId()).get();
@@ -39,7 +46,7 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
     @Override
     public IssueRecord returnBook(AssignBookDto assignBookDto) {
         List<IssueRecord> list = findUserInIssueRecords(assignBookDto.getUser());
-        System.out.println(list.toArray().toString());
+//        System.out.println("Array: "+Arrays.toString(list.toArray()));
         IssueRecord record = list.stream()
                 .filter(records -> records.getBookId().getName()
                         .equals(assignBookDto.getBookName()) && records.getReturnDate() == null)
