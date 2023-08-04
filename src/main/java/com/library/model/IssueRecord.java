@@ -1,129 +1,103 @@
 package com.library.model;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
-import jakarta.persistence.*;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.mapping.ToOne;
-
 @Entity
 public class IssueRecord {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer issueRecordId;
-	
-	@Column
-	private LocalDate returnDate;
-	
-	@Column
-	@CreationTimestamp
-	private LocalDate issueDate;
-	
-	@Column
-	private Integer Amount;
-	
-	@ManyToOne
-	@JoinColumn(name = "userId")
-	private User userId;
-	
-	@ManyToOne
-	@JoinColumn(name = "bookId")
-	private Book bookId;
 
-	public IssueRecord( LocalDate returnDate, LocalDate issueDate,
-					   Integer amount, User userId, Book bookId) {
-		super();
-		this.returnDate = returnDate;
-		this.issueDate = issueDate;
-		Amount = amount;
-		this.userId = userId;
-		this.bookId = bookId;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer issueRecordId;
 
-	public IssueRecord(Integer issueRecordId, LocalDate returnDate, LocalDate issueDate,
-			Integer amount, User userId, Book bookId) {
-		super();
-		this.issueRecordId = issueRecordId;
-		this.returnDate = returnDate;
-		this.issueDate = issueDate;
-		Amount = amount;
-		this.userId = userId;
-		this.bookId = bookId;
-	}
+    @Column
+    private LocalDate returnDate;
 
-	public IssueRecord() {
-		super();
-	}
+    @Column
+    @CreationTimestamp
+    private LocalDate issueDate;
 
-	public Integer getIssueRecordId() {
-		return issueRecordId;
-	}
+    @Column
+    private Integer Amount;
 
-	public void setIssueRecordId(Integer issueRecordId) {
-		this.issueRecordId = issueRecordId;
-	}
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User userId;
 
-	public LocalDate getReturnDate() {
-		return returnDate;
-	}
+    @ManyToOne
+    @JoinColumn(name = "bookId")
+    private Book bookId;
 
-	public void setReturnDate(LocalDate returnDate) {
-		this.returnDate = returnDate;
-	}
+    public IssueRecord(LocalDate returnDate, LocalDate issueDate, Integer amount, User userId, Book bookId) {
+        super();
+        this.returnDate = returnDate;
+        this.issueDate = issueDate;
+        Amount = amount;
+        this.userId = userId;
+        this.bookId = bookId;
+    }
 
-	public LocalDate getIssueDate() {
-		return issueDate;
-	}
+    public IssueRecord(Integer issueRecordId, LocalDate returnDate, LocalDate issueDate, Integer amount, User userId, Book bookId) {
+        super();
+        this.issueRecordId = issueRecordId;
+        this.returnDate = returnDate;
+        this.issueDate = issueDate;
+        Amount = amount;
+        this.userId = userId;
+        this.bookId = bookId;
+    }
 
-	public void setIssueDate(LocalDate issueDate) {
-		this.issueDate = issueDate;
-	}
+    public IssueRecord() {
+        super();
+    }
 
-	public Integer getAmount() {
-		return Amount;
-	}
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
 
-	public void setAmount(Integer amount) {
-		Amount = amount;
-	}
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
 
-	public User getUserId() {
-		return userId;
-	}
+    public LocalDate getIssueDate() {
+        return issueDate;
+    }
 
-	public void setUserId(User userId) {
-		this.userId = userId;
-	}
+    public Integer getAmount() {
+        return Amount;
+    }
 
-	public Book getBookId() {
-		return bookId;
-	}
+    public void setAmount(Integer amount) {
+        Amount = amount;
+    }
 
-	public void setBookId(Book bookId) {
-		this.bookId = bookId;
-	}
+    public User getUserId() {
+        return userId;
+    }
 
-	@Override
-	public String toString() {
-		return "IssueRecord [issueRecordId=" + issueRecordId + ", returnDate="
-				+ returnDate + ", issueDate=" + issueDate + ", Amount=" + Amount + ", userId=" + userId + ", bookId="
-				+ bookId + "]";
-	}
+    public Book getBookId() {
+        return bookId;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueRecord [issueRecordId=" + issueRecordId + ", returnDate=" + returnDate + ", issueDate=" + issueDate + ", Amount=" + Amount + ", userId=" + userId + ", bookId=" + bookId + "]";
+    }
 
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		IssueRecord that = (IssueRecord) o;
-		return Objects.equals(issueRecordId, that.issueRecordId) && Objects.equals(returnDate, that.returnDate) && Objects.equals(issueDate, that.issueDate) && Objects.equals(Amount, that.Amount) && Objects.equals(userId, that.userId) && Objects.equals(bookId, that.bookId);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IssueRecord that = (IssueRecord) o;
+        return Objects.equals(issueRecordId, that.issueRecordId) && Objects.equals(returnDate, that.returnDate) && Objects.equals(issueDate, that.issueDate) && Objects.equals(Amount, that.Amount) && Objects.equals(userId, that.userId) && Objects.equals(bookId, that.bookId);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(issueRecordId, returnDate, issueDate, Amount, userId, bookId);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(issueRecordId, returnDate, issueDate, Amount, userId, bookId);
+    }
 }

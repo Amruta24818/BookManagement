@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,13 +22,13 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
     private static final int FINE = 5;
 
     @Autowired
-    private IssueRecordRepository issueRecordRepository;
+    private final IssueRecordRepository issueRecordRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public IssueRecordServiceImpl(BookRepository bookRepository, UserRepository userRepository, IssueRecordRepository issueRecordRepository) {
         this.bookRepository = bookRepository;
@@ -38,26 +38,34 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
 
     @Override
     public IssueRecord assignBook(AssignBookDto assignBookDto) {
-        User user = userRepository.findById(assignBookDto.getUser().getUserId()).get();
-        Book book = bookRepository.findByName(assignBookDto.getBookName());
-        return issueRecordRepository.save(new IssueRecord(null, LocalDate.now(), 0, user, book));
+        try {
+            Optional<User> temp = userRepository.findById(assignBookDto.getUser().getUserId());
+            User user = temp.orElse(null);
+            Book book = bookRepository.findByName(assignBookDto.getBookName());
+            if (user != null && book != null)
+                return issueRecordRepository.save(new IssueRecord(null, LocalDate.now(), 0, user, book));
+            return null;
+        }catch(Exception e) {
+            return null;
+        }
     }
 
     @Override
     public IssueRecord returnBook(AssignBookDto assignBookDto) {
         List<IssueRecord> list = findUserInIssueRecords(assignBookDto.getUser());
-//        System.out.println("Array: "+Arrays.toString(list.toArray()));
-        IssueRecord record = list.stream()
-                .filter(records -> records.getBookId().getName()
-                        .equals(assignBookDto.getBookName()) && records.getReturnDate() == null)
-                .findAny() .orElse(null);
-        if(record != null){
-            record.setReturnDate(LocalDate.now());
-            int days = (int) ChronoUnit.DAYS.between( record.getIssueDate(), record.getReturnDate());
-            if(days>7) {
-                record.setAmount(FINE * (days-7));
+        if(list!=null) {
+            IssueRecord issueRecord = list.stream()
+                    .filter(records -> records.getBookId().getName()
+                            .equals(assignBookDto.getBookName()) && records.getReturnDate() == null)
+                    .findAny().orElse(null);
+            if (issueRecord != null) {
+                issueRecord.setReturnDate(LocalDate.now());
+                int days = (int) ChronoUnit.DAYS.between(issueRecord.getIssueDate(), issueRecord.getReturnDate());
+                if (days > 7) {
+                    issueRecord.setAmount(FINE * (days - 7));
+                }
+                return issueRecordRepository.save(issueRecord);
             }
-            return issueRecordRepository.save(record);
         }
         return null;
     }
@@ -75,10 +83,11 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
     @Override
     public List<IssueRecord> getAllFineRecord() {
         List<IssueRecord> list = issueRecordRepository.findAll();
-        List<IssueRecord> record = list.stream()
-                .filter(records -> records.getAmount() > 0)
-                .collect(Collectors.toList());
-        return record;
+        if(list!=null)
+            return list.stream()
+                    .filter(records -> records.getAmount() > 0)
+                    .collect(Collectors.toList());
+        return null;
     }
 
 

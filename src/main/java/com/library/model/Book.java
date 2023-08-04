@@ -1,103 +1,75 @@
 package com.library.model;
 
-import org.springframework.lang.NonNull;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
 public class Book {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer bookId;
-	
-	@Column(unique = true)
-	@NonNull
-	private String name;
-	
-	@Column
-	private String author;
-	
-	@Column
-	private double price;
-	
-	@Column
-	private long isbn;
-	
-	public Book() {
-		super();
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer bookId;
 
-	public Book(Integer bookId, String name, String author, double price, long isbn) {
-		super();
-		this.bookId = bookId;
-		this.name = name;
-		this.author = author;
-		this.price = price;
-		this.isbn = isbn;
-	}
+    @Column(unique = true)
+    private String name;
 
-	public Integer getBookId() {
-		return bookId;
-	}
+    @Column
+    private String author;
 
-	public void setBookId(Integer bookId) {
-		this.bookId = bookId;
-	}
+    @Column
+    private double price;
 
-	public String getName() {
-		return name;
-	}
+    @Column
+    private long isbn;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Book() {
+        super();
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public Book(Integer bookId, String name, String author, double price, long isbn) {
+        super();
+        this.bookId = bookId;
+        this.name = name;
+        this.author = author;
+        this.price = price;
+        this.isbn = isbn;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public Integer getBookId() {
+        return bookId;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public long getIsbn() {
-		return isbn;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public void setIsbn(long isbn) {
-		this.isbn = isbn;
-	}
+    public long getIsbn() {
+        return isbn;
+    }
 
-	@Override
-	public String toString() {
-		return "Book [bookId=" + bookId + ", name=" + name + ", subject=" + author + ", price=" + price + ", isbn="
-				+ isbn + "]";
-	}
+    @Override
+    public String toString() {
+        return "Book [bookId=" + bookId + ", name=" + name + ", subject=" + author + ", price=" + price + ", isbn=" + isbn + "]";
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Book book = (Book) o;
-		return Double.compare(book.price, price) == 0 && isbn == book.isbn && Objects.equals(bookId, book.bookId) && name.equals(book.name) && Objects.equals(author, book.author);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Double.compare(book.price, price) == 0 && isbn == book.isbn && Objects.equals(bookId, book.bookId) && name.equals(book.name) && Objects.equals(author, book.author);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(bookId, name, author, price, isbn);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookId, name, author, price, isbn);
+    }
 }

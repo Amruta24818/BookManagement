@@ -5,11 +5,13 @@ import com.library.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements IBookService{
 
     @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
@@ -17,6 +19,9 @@ public class BookServiceImpl implements IBookService{
 
     @Override
     public Book addBook(Book book) {
+        Book copy = findBookByName(book.getName());
+        if(copy!=null)
+            return null;
         return bookRepository.save(book);
     }
 
@@ -24,16 +29,14 @@ public class BookServiceImpl implements IBookService{
     public boolean deleteById(int bookId) {
         bookRepository.deleteById(bookId);
         Book book = findBookById(bookId);
-        if(book != null){
-            return false;
-        }
-        return true;
+        return book==null;
     }
 
     @Override
     public Book findBookById(int bookId) {
         try{
-            return (Book) bookRepository.findById(bookId).get();
+            Optional<Book> book = bookRepository.findById(bookId);
+            return book.orElse(null);
         }catch(Exception e) {
             return null;
         }

@@ -1,13 +1,9 @@
 package com.library.bookmanagement.unit;
 
 import com.library.dao.BookRepository;
-
 import com.library.model.Book;
-import com.library.model.User;
-import com.library.model.UserRole;
 import com.library.service.BookServiceImpl;
 import com.library.service.IBookService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -18,36 +14,32 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-public class TestBookService {
+class TestBookService {
 
-    private BookRepository bookRepository = mock(BookRepository.class);
-    private IBookService bookService = new BookServiceImpl(bookRepository);
+    private final BookRepository bookRepository = mock(BookRepository.class);
+    private final IBookService bookService = new BookServiceImpl(bookRepository);
 
 
     @Test
-    public void PositiveAddBook() {
+    void PositiveAddBook() {
 
-        when(bookRepository.save(any())).thenAnswer(book -> {
-            return book.getArguments()[0];
-        });
+        when(bookRepository.save(any())).thenAnswer(book -> book.getArguments()[0]);
         Book book = new Book(1, "let us c", "Yashvant kanetkar", 256, 125896);
         assertEquals(book, bookService.addBook(book));
     }
 
     @Test
-    public void PositiveDeleteById() {
-        when(bookRepository.findById(any())).thenAnswer(book -> {
-            return book.getArguments()[0];
-        });
+    void PositiveDeleteById() {
+        when(bookRepository.findById(any())).thenAnswer(book -> book.getArguments()[0]);
 
         doNothing().when(bookRepository).deleteById(anyInt());
 
-        Boolean result = bookService.deleteById(1);
+        boolean result = bookService.deleteById(1);
         assertTrue(result);
     }
 
     @Test
-    public void PositiveFindBookById() {
+    void PositiveFindBookById() {
         when(bookRepository.findById(any())).thenReturn(Optional.of(new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
         Book book = new Book(1, "let us c", "Yashvant kanetkar", 256, 125896);
         Book result = bookService.findBookById(1);
@@ -59,7 +51,7 @@ public class TestBookService {
     }
 
     @Test
-    public void PositiveFindBookByName() {
+    void PositiveFindBookByName() {
         when(bookRepository.findByName(any())).thenReturn(new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         Book book = new Book(1, "let us c", "Yashvant kanetkar", 256, 125896);
         Book result = bookService.findBookByName(book.getName());
@@ -68,5 +60,31 @@ public class TestBookService {
         assertEquals(book.getAuthor(), result.getAuthor());
         assertEquals(book.getPrice(), result.getPrice());
         assertEquals(book.getIsbn(), result.getIsbn());
+    }
+
+    @Test
+    void NegativeAddBook() {
+        when(bookRepository.findByName(any())).thenReturn(null);
+        Book book = new Book(1, "let us c", "Yashvant kanetkar", 256, 125896);
+        assert(null == bookService.addBook(book));
+    }
+
+    @Test
+    void NegativeDeleteById() {
+        when(bookRepository.findById(any())).thenReturn(null);
+        doNothing().when(bookRepository).deleteById(anyInt());
+        assertTrue(bookService.deleteById(1));
+    }
+
+    @Test
+    void NegativeFindBookById() {
+        when(bookRepository.findById(any())).thenReturn(null);
+        assert(null == bookService.findBookById(1));
+    }
+
+    @Test
+    void NegativeFindBookByName() {
+        when(bookRepository.findByName(any())).thenReturn(null);
+        assert(null == bookService.findBookByName("let us c"));
     }
 }
