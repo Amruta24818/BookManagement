@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements IUserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private IssueRecordRepository issueRecordRepository;
+    private final IssueRecordRepository issueRecordRepository;
 
     public UserServiceImpl(UserRepository userRepository, IssueRecordRepository issueRecordRepository) {
         this.userRepository = userRepository;
@@ -28,14 +28,21 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User registerUser(User user) {
+        User userFromDb = findByEmail(user.getEmail());
+        if(userFromDb != null){
+            return null;
+        }
         return userRepository.save(user);
     }
 
     @Override
     public User editProfile(User user) {
         User userFromDb = findByEmail(user.getEmail());
-        userFromDb.setMobNo(user.getMobNo());
-        return userRepository.save(userFromDb);
+        if(userFromDb != null) {
+            userFromDb.setMobNo(user.getMobNo());
+            return userRepository.save(userFromDb);
+        }
+        return null;
     }
 
     @Override
@@ -51,9 +58,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User editPassword(User user) {
         User userFromDb = findByEmail(user.getEmail());
-        userFromDb.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
-        userRepository.save(userFromDb);
-        return userFromDb;
+        if(userFromDb != null) {
+            userFromDb.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
+            return userRepository.save(userFromDb);
+        }
+        return null;
     }
 
     @Override
@@ -67,16 +76,22 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User findByUserId(int userId) {
-        return userRepository.findById(userId).get();
+        try {
+            return userRepository.findById(userId).orElse(null);
+        }catch(Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<IssueRecord> getFineReport(int userId) {
         List<IssueRecord> list = issueRecordRepository.findAll();
-        List<IssueRecord> record = list.stream()
-                .filter(records -> records.getAmount() > 0 && records.getUserId().getUserId()
-                        .equals(userId))
-                .collect(Collectors.toList());
-        return record;
+        if(list != null) {
+            return list.stream()
+                    .filter(records -> records.getAmount() > 0 && records.getUserId().getUserId()
+                            .equals(userId))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }

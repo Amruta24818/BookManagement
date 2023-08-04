@@ -25,3 +25,8 @@ Librarian Functionality
 Owner
 1. Appoint Librarian
 2. Get reports (Membership, Fine)
+
+Token for sonaqube
+sqp_1ec39b960a3c909125c36395e143f642dfd86306
+
+mvn clean verify sonar:sonar -Dsonar.projectKey=BookManagement -Dsonar.projectName='BookManagement' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_1ec39b960a3c909125c36395e143f642dfd86306
