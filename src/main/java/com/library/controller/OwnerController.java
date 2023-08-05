@@ -23,6 +23,10 @@ public class OwnerController {
     @Autowired
     private IUserService userService;
 
+    public OwnerController(IUserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/get-all-issuerecord")
     public ResponseEntity<List<IssueRecord>> getAllIssueRecord(){
         return new ResponseEntity<>(issueRecordService.getAllIssueRecord(), HttpStatus.CREATED);
@@ -30,6 +34,7 @@ public class OwnerController {
 
     @PostMapping("/appoint-librarian")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
+        System.out.println("inside registerUser");
         user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
         user.setRole(UserRole.LIBRARIAN);
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
