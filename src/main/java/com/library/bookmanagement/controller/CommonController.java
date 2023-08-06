@@ -1,10 +1,10 @@
-package com.library.controller;
+package com.library.bookmanagement.controller;
 
-import com.library.dto.LoginDto;
-import com.library.model.IssueRecord;
-import com.library.model.User;
-import com.library.model.UserRole;
-import com.library.service.IUserService;
+import com.library.bookmanagement.dto.LoginDto;
+import com.library.bookmanagement.model.IssueRecord;
+import com.library.bookmanagement.model.User;
+import com.library.bookmanagement.model.UserRole;
+import com.library.bookmanagement.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

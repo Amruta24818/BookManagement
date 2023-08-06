@@ -1,6 +1,6 @@
-package com.library.dto;
+package com.library.bookmanagement.dto;
 
-import com.library.model.User;
+import com.library.bookmanagement.model.User;
 
 public class AssignBookDto {
 

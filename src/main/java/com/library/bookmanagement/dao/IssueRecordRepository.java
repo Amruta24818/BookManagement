@@ -1,7 +1,7 @@
-package com.library.dao;
+package com.library.bookmanagement.dao;
 
-import com.library.model.IssueRecord;
-import com.library.model.User;
+import com.library.bookmanagement.model.IssueRecord;
+import com.library.bookmanagement.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

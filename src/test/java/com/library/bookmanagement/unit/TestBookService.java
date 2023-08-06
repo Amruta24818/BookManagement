@@ -1,9 +1,10 @@
 package com.library.bookmanagement.unit;
 
-import com.library.dao.BookRepository;
-import com.library.model.Book;
-import com.library.service.BookServiceImpl;
-import com.library.service.IBookService;
+
+import com.library.bookmanagement.dao.BookRepository;
+import com.library.bookmanagement.model.Book;
+import com.library.bookmanagement.service.BookServiceImpl;
+import com.library.bookmanagement.service.IBookService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

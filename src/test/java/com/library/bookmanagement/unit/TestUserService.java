@@ -1,14 +1,14 @@
 package com.library.bookmanagement.unit;
 
-import com.library.dao.IssueRecordRepository;
-import com.library.dao.UserRepository;
-import com.library.dto.LoginDto;
-import com.library.model.Book;
-import com.library.model.IssueRecord;
-import com.library.model.User;
-import com.library.model.UserRole;
-import com.library.service.IUserService;
-import com.library.service.UserServiceImpl;
+import com.library.bookmanagement.dao.IssueRecordRepository;
+import com.library.bookmanagement.dao.UserRepository;
+import com.library.bookmanagement.dto.LoginDto;
+import com.library.bookmanagement.model.Book;
+import com.library.bookmanagement.model.IssueRecord;
+import com.library.bookmanagement.model.User;
+import com.library.bookmanagement.model.UserRole;
+import com.library.bookmanagement.service.IUserService;
+import com.library.bookmanagement.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

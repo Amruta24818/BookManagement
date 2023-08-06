@@ -1,4 +1,4 @@
-package com.library.dto;
+package com.library.bookmanagement.dto;
 
 public class LoginDto {
     private String email;

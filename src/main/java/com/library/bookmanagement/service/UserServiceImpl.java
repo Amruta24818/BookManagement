@@ -1,10 +1,10 @@
-package com.library.service;
+package com.library.bookmanagement.service;
 
-import com.library.dao.IssueRecordRepository;
-import com.library.dao.UserRepository;
-import com.library.dto.LoginDto;
-import com.library.model.IssueRecord;
-import com.library.model.User;
+import com.library.bookmanagement.dao.IssueRecordRepository;
+import com.library.bookmanagement.dao.UserRepository;
+import com.library.bookmanagement.dto.LoginDto;
+import com.library.bookmanagement.model.IssueRecord;
+import com.library.bookmanagement.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

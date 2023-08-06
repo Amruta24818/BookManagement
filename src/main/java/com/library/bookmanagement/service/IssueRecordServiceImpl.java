@@ -1,12 +1,12 @@
-package com.library.service;
+package com.library.bookmanagement.service;
 
-import com.library.dao.BookRepository;
-import com.library.dao.IssueRecordRepository;
-import com.library.dao.UserRepository;
-import com.library.dto.AssignBookDto;
-import com.library.model.Book;
-import com.library.model.IssueRecord;
-import com.library.model.User;
+import com.library.bookmanagement.dao.BookRepository;
+import com.library.bookmanagement.dao.IssueRecordRepository;
+import com.library.bookmanagement.dao.UserRepository;
+import com.library.bookmanagement.dto.AssignBookDto;
+import com.library.bookmanagement.model.Book;
+import com.library.bookmanagement.model.IssueRecord;
+import com.library.bookmanagement.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
             User user = temp.orElse(null);
             Book book = bookRepository.findByName(assignBookDto.getBookName());
             if (user != null && book != null)
-                return issueRecordRepository.save(new IssueRecord(null, LocalDate.now(), 0, user, book));
+                return issueRecordRepository.save(new IssueRecord(null,null, LocalDate.now(), 0, user, book));
             return null;
         }catch(Exception e) {
             return null;
