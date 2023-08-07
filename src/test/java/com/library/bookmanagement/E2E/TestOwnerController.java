@@ -3,12 +3,10 @@ package com.library.bookmanagement.E2E;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.bookmanagement.controller.OwnerController;
-import com.library.bookmanagement.dao.BookRepository;
 import com.library.bookmanagement.model.Book;
 import com.library.bookmanagement.model.IssueRecord;
 import com.library.bookmanagement.model.User;
 import com.library.bookmanagement.model.UserRole;
-import com.library.bookmanagement.service.BookServiceImpl;
 import com.library.bookmanagement.service.IssueRecordServiceImpl;
 import com.library.bookmanagement.service.UserServiceImpl;
 import org.json.JSONArray;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,15 +24,15 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.Clock;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-@ComponentScan(basePackages ="com.library")
+@ComponentScan(basePackages ="com.library.bookmanagement")
 @AutoConfigureMockMvc
 @SpringBootTest(properties = "spring.main.lazy-initialization=true",classes = {OwnerController.class})
 @ExtendWith(SpringExtension.class)
@@ -105,7 +102,27 @@ class TestOwnerController {
 
     @Test
     void PositiveGetAllFineRecords(){
-        
+        when(issueRecordService.getAllFineRecord()).thenReturn(List.of(new IssueRecord(null, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896))));
+        List<IssueRecord> list = List.of(new IssueRecord(null, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
+        try{
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/owner/get-fine-report")
+                            .contentType("application/json;charset=UTF-8").accept("*/*"))
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andReturn();
+            JSONArray jsonResult = new JSONArray(result.getResponse().getContentAsString());
+            List<IssueRecord> listData = new ArrayList<>();
+
+            JsonNode jsonArray = mapper.readTree(String.valueOf(jsonResult));
+
+            for (JsonNode element : jsonArray) {
+                IssueRecord object = mapper.treeToValue(element, IssueRecord.class);
+                listData.add(object);
+            }
+
+            assert (list.equals(listData));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
