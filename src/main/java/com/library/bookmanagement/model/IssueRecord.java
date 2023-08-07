@@ -45,6 +45,14 @@ public class IssueRecord {
         super();
     }
 
+    public Integer getIssueRecordId() {
+        return issueRecordId;
+    }
+
+    public void setIssueRecordId(Integer issueRecordId) {
+        this.issueRecordId = issueRecordId;
+    }
+
     public LocalDate getReturnDate() {
         return returnDate;
     }

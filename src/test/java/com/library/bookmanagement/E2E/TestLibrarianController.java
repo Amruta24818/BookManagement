@@ -27,9 +27,9 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ComponentScan(basePackages ="com.library.bookmanagement")
 @AutoConfigureMockMvc
@@ -77,13 +77,12 @@ public class TestLibrarianController {
     void PositiveDeleteBookById(){
         when(bookService.deleteById(anyInt())).thenReturn(true);
         try {
-            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/book/delete-book/{bookId}")
-                            .contentType("application/json;charset=UTF-8").accept("*/*")
-                            .content(mapper.writeValueAsString(1)))
-                    .andExpect(MockMvcResultMatchers.status().isNoContent())
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/book/delete-book/1")
+                            .contentType("application/json;charset=UTF-8").accept("*/*"))
+                           .andExpect(MockMvcResultMatchers.status().isOk())
                     .andReturn();
-            JSONObject json = new JSONObject(result.getResponse().getContentAsString());
-//            assertTrue(json.getBoolean("true"));
+//            JSONObject json = new JSONObject(result.getResponse().getContentAsString());
+            assertEquals("Book Deleted successfully", result.getResponse().getContentAsString());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -91,12 +90,11 @@ public class TestLibrarianController {
 
     @Test
     void PositiveFindBook(){
-        when(bookService.findBookByName(any())).thenAnswer(book -> book.getArguments()[0]);
-        Book book = new Book(1, "let us c", "Yashvant kanetkar", 256, 125896);
+        when(bookService.findBookByName(anyString())).thenAnswer(book -> book.getArguments()[0]);
+        Book book = new Book(1, "letusc", "Yashvant kanetkar", 256, 125896);
         try {
-            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/book/find-book/{bookName}")
-                    .contentType("application/json;charset=UTF-8").accept("*/*")
-                    .content(mapper.writeValueAsString(book.getName())))
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/book/find-book/letusc")
+                    .contentType("application/json;charset=UTF-8").accept("*/*"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andReturn();
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
@@ -119,8 +117,13 @@ public class TestLibrarianController {
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/book/assign-book")
                             .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(bookDto)))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
                     .andReturn();
+//            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/book/assign-book")
+//                            .contentType("application/json;charset=UTF-8").accept("*/*")
+//                            .content(mapper.writeValueAsString(bookDto)))
+//                    .andExpect(MockMvcResultMatchers.status().isOk())
+//                    .andReturn();
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
             assertEquals(issueRecord,json);
         } catch (Exception e) {

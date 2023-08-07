@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ComponentScan(basePackages ="com.library.bookmanagement")
 @AutoConfigureMockMvc
@@ -56,7 +57,7 @@ public class TestCommonController {
 
         try {
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/user/register")
-                            .contentType("application/json;charset=TUF-8").accept("*/*")
+                            .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(users)))
                     .andExpect(MockMvcResultMatchers.status().isCreated())
                     .andReturn();
@@ -80,10 +81,12 @@ public class TestCommonController {
         LoginDto loginDto = new LoginDto("shubham@gmail.com", "shubham");
         try {
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-in")
-                            .contentType("application/json;charset=TUF-8").accept("*/*")
+                            .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(loginDto)))
                     .andExpect(MockMvcResultMatchers.status().isCreated())
                     .andReturn();
+            System.out.println(result);
+
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
             assertEquals(users.getUserId(), json.getInt("userId"));
             assertEquals(users.getName(), json.getString("name"));
@@ -101,16 +104,22 @@ public class TestCommonController {
         User user = new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER);
         try{
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/edit-profile")
-                            .contentType("application/json;charset=TUF-8").accept("*/*")
+                            .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(user)))
-                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.status().isAccepted())
                     .andReturn();
+//
+//            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/edit-profile")
+//                            .contentType("application/json;charset=TUF-8").accept("*/*")
+//                            .content(mapper.writeValueAsString(user)))
+//                    .andExpect(MockMvcResultMatchers.status().isCreated())
+//                    .andReturn();
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
             assertEquals(user.getUserId(), json.getInt("userId"));
             assertEquals(user.getName(), json.getString("name"));
             assertEquals(user.getEmail(), json.getString("email"));
             assertEquals(user.getMobNo(), json.getString("mobNo"));
-            assertEquals(user.getPassword(),new String(Base64.getDecoder().decode(json.getString("password").getBytes())));
+            assertEquals(user.getPassword(),json.getString("password"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -122,17 +131,19 @@ public class TestCommonController {
         User user = new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER);
 
         try{
+
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/edit-password")
-                            .contentType("application/json;charset=TUF-8").accept("*/*")
+                            .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(user)))
-                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.status().isAccepted())
                     .andReturn();
+
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
             assertEquals(user.getUserId(), json.getInt("userId"));
             assertEquals(user.getName(), json.getString("name"));
             assertEquals(user.getEmail(), json.getString("email"));
             assertEquals(user.getMobNo(), json.getString("mobNo"));
-            assertEquals(user.getPassword(),new String(Base64.getDecoder().decode(json.getString("password").getBytes())));
+            assertEquals(user.getPassword(),json.getString("password"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -141,13 +152,13 @@ public class TestCommonController {
     @Test
     void PositiveGetAllFineRecords(){
         when(userService.getFineReport(anyInt())).thenReturn(List.of(new IssueRecord(1, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896))));
-        List<IssueRecord> list = List.of(new IssueRecord(null, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
+        List<IssueRecord> list = List.of(new IssueRecord(1, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
         try {
-            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/owner/get-all-fine/{userId}")
-                            .contentType("application/json;charset=UTF-8").accept("*/*")
-                            .content(mapper.writeValueAsString(list.get(0).getUserId().getUserId())))
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/get-all-fine/1")
+                            .contentType("application/json;charset=UTF-8").accept("*/*"))
                     .andExpect(MockMvcResultMatchers.status().isCreated())
                     .andReturn();
+
             JSONArray jsonResult = new JSONArray(result.getResponse().getContentAsString());
             List<IssueRecord> listData = new ArrayList<>();
 
@@ -157,7 +168,6 @@ public class TestCommonController {
                 IssueRecord object = mapper.treeToValue(element, IssueRecord.class);
                 listData.add(object);
             }
-
             assert (list.equals(listData));
         } catch (Exception e) {
             throw new RuntimeException(e);

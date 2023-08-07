@@ -34,7 +34,7 @@ public class CommonController {
         if(user != null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/edit-profile")

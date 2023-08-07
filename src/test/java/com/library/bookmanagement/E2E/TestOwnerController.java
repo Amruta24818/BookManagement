@@ -32,7 +32,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-@ComponentScan(basePackages ="com.library.bookmanagement")
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+@ComponentScan(basePackages ="com.library")
 @AutoConfigureMockMvc
 @SpringBootTest(properties = "spring.main.lazy-initialization=true",classes = {OwnerController.class})
 @ExtendWith(SpringExtension.class)
