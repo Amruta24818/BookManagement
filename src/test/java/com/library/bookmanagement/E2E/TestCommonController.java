@@ -76,14 +76,14 @@ public class TestCommonController {
 
     @Test
     void PositiveSigninUser(){
-        when(userService.login(any())).thenAnswer(user -> user.getArguments()[0]);
+        when(userService.login(any())).thenReturn(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER));
         User users = new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER);
         LoginDto loginDto = new LoginDto("shubham@gmail.com", "shubham");
         try {
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-in")
                             .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(loginDto)))
-                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.status().isOk())
                     .andReturn();
             System.out.println(result);
 
@@ -92,7 +92,7 @@ public class TestCommonController {
             assertEquals(users.getName(), json.getString("name"));
             assertEquals(users.getEmail(), json.getString("email"));
             assertEquals(users.getMobNo(), json.getString("mobNo"));
-            assertEquals(users.getPassword(),new String(Base64.getDecoder().decode(json.getString("password").getBytes())));
+            assertEquals(users.getPassword(),json.getString("password"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -108,12 +108,6 @@ public class TestCommonController {
                             .content(mapper.writeValueAsString(user)))
                     .andExpect(MockMvcResultMatchers.status().isAccepted())
                     .andReturn();
-//
-//            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/edit-profile")
-//                            .contentType("application/json;charset=TUF-8").accept("*/*")
-//                            .content(mapper.writeValueAsString(user)))
-//                    .andExpect(MockMvcResultMatchers.status().isCreated())
-//                    .andReturn();
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
             assertEquals(user.getUserId(), json.getInt("userId"));
             assertEquals(user.getName(), json.getString("name"));

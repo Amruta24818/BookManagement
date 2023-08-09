@@ -36,7 +36,7 @@ class TestIssueRecordService {
         when(bookRepository.findByName(any())).thenReturn(new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         when(issueRecordRepository.save(any())).thenAnswer(issueRecord -> issueRecord.getArguments()[0]);
 
-        IssueRecord issueRecord = new IssueRecord(1,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
+        IssueRecord issueRecord = new IssueRecord(null,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), issueRecord.getBookId().getName());
         assertEquals(issueRecord, issueRecordService.assignBook(bookDto));
     }

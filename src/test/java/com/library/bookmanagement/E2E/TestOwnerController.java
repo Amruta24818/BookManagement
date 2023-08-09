@@ -78,7 +78,7 @@ class TestOwnerController {
 
     @Test
     void PositiveGetAllIssueRecord(){
-        when(issueRecordService.getAllIssueRecord()).thenReturn(List.of(new IssueRecord(1, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896))));
+        when(issueRecordService.getAllIssueRecord()).thenReturn(List.of(new IssueRecord(null, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896))));
         List<IssueRecord> list = List.of(new IssueRecord(null, LocalDate.now(), LocalDate.now(), 10, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
         try {
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/owner/get-all-issuerecord")

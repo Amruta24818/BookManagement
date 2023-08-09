@@ -1,5 +1,6 @@
 package com.library.bookmanagement.E2E;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.bookmanagement.controller.LibrarianController;
 import com.library.bookmanagement.dto.AssignBookDto;
@@ -90,12 +91,12 @@ public class TestLibrarianController {
 
     @Test
     void PositiveFindBook(){
-        when(bookService.findBookByName(anyString())).thenAnswer(book -> book.getArguments()[0]);
+        when(bookService.findBookByName(anyString())).thenReturn(new Book(1, "letusc", "Yashvant kanetkar", 256, 125896));
         Book book = new Book(1, "letusc", "Yashvant kanetkar", 256, 125896);
         try {
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/book/find-book/letusc")
                     .contentType("application/json;charset=UTF-8").accept("*/*"))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
                     .andReturn();
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
             assertEquals(book.getBookId(),json.getInt("bookId"));
@@ -110,22 +111,20 @@ public class TestLibrarianController {
 
     @Test
     void PositiveAssignBook(){
-        when(issueRecordService.assignBook(any())).thenAnswer(issueRecord -> issueRecord.getArguments()[0]);
+        when(issueRecordService.assignBook(any())).thenReturn(new IssueRecord(null,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
         AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");
-        IssueRecord issueRecord = new IssueRecord(1,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
+        IssueRecord issueRecord = new IssueRecord(null,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         try{
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/book/assign-book")
                             .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(bookDto)))
                     .andExpect(MockMvcResultMatchers.status().isCreated())
                     .andReturn();
-//            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/book/assign-book")
-//                            .contentType("application/json;charset=UTF-8").accept("*/*")
-//                            .content(mapper.writeValueAsString(bookDto)))
-//                    .andExpect(MockMvcResultMatchers.status().isOk())
-//                    .andReturn();
+
             JSONObject json = new JSONObject(result.getResponse().getContentAsString());
-            assertEquals(issueRecord,json);
+            JsonNode jsonArray = mapper.readTree(String.valueOf(json));
+            IssueRecord object = mapper.treeToValue(jsonArray, IssueRecord.class);
+            assertEquals(issueRecord, object);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -133,17 +132,17 @@ public class TestLibrarianController {
 
     @Test
     void PositiveReturnBook(){
-        when(issueRecordService.returnBook(any())).thenAnswer(issueRecord -> issueRecord.getArguments()[0]);
+        when(issueRecordService.returnBook(any())).thenReturn(new IssueRecord(1,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
         AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");
         IssueRecord issueRecord = new IssueRecord(1,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         try{
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/book/return-book")
                             .contentType("application/json;charset=UTF-8").accept("*/*")
                             .content(mapper.writeValueAsString(bookDto)))
-                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.status().isOk())
                     .andReturn();
-            JSONObject json = new JSONObject(result.getResponse().getContentAsString());
-            assertEquals(issueRecord,json);
+            assertEquals("Book returned successfully",result.getResponse().getContentAsString());
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

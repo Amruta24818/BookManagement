@@ -42,6 +42,7 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
             Optional<User> temp = userRepository.findById(assignBookDto.getUser().getUserId());
             User user = temp.orElse(null);
             Book book = bookRepository.findByName(assignBookDto.getBookName());
+
             if (user != null && book != null)
                 return issueRecordRepository.save(new IssueRecord(null,null, LocalDate.now(), 0, user, book));
             return null;
