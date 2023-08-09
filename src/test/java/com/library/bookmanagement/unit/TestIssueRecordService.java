@@ -84,6 +84,23 @@ class TestIssueRecordService {
     }
 
     @Test
+    void NegativeAssignBookWith() {
+        when(userRepository.findById(any())).thenReturn(null);
+        when(bookRepository.findByName(any())).thenReturn(new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
+
+        AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");
+        assert(null == issueRecordService.assignBook(bookDto));
+    }
+    @Test
+    void NegativeAssignBookWithAnother() {
+        when(userRepository.findById(any())).thenReturn(Optional.of(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER)));
+        when(bookRepository.findByName(any())).thenReturn(null);
+
+        AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");
+        assert(null == issueRecordService.assignBook(bookDto));
+    }
+
+    @Test
     void NegativeReturnBook() {
         when(issueRecordRepository.findAllIssueRecordByUserId(any())).thenReturn(null);
         AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");

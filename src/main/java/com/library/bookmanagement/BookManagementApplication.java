@@ -10,8 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages="com.library.bookmanagement.model")
 public class BookManagementApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BookManagementApplication.class, args);
+	public static void main(String[] args) { SpringApplication.run(BookManagementApplication.class, args);
 	}
 
 }

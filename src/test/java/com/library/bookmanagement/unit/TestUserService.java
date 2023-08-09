@@ -30,7 +30,7 @@ class TestUserService {
 
     @Test
     void PositiveRegisterUser() {
-
+        when(userRepository.findByEmail(any())).thenReturn(null);
         when(userRepository.save(any())).thenAnswer(user -> user.getArguments()[0]);
         User user = new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER);
         assertEquals(user, userService.registerUser(user));
@@ -124,7 +124,7 @@ class TestUserService {
     @Test
     void NegativeRegisterUser() {
         User user = new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER);
-        when(userRepository.findByEmail(any())).thenReturn(null);
+        when(userRepository.findByEmail(any())).thenReturn(user);
         assert(null==userService.registerUser(user));
     }
 

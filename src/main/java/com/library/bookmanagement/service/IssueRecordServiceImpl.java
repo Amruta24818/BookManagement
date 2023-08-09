@@ -88,7 +88,7 @@ public class IssueRecordServiceImpl implements IIssueRecordService {
             return list.stream()
                     .filter(records -> records.getAmount() > 0)
                     .collect(Collectors.toList());
-        return null;
+        return list;
     }
 
 

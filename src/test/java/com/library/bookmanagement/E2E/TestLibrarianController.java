@@ -27,10 +27,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ComponentScan(basePackages ="com.library.bookmanagement")
 @AutoConfigureMockMvc
@@ -134,7 +132,6 @@ public class TestLibrarianController {
     void PositiveReturnBook(){
         when(issueRecordService.returnBook(any())).thenReturn(new IssueRecord(1,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
         AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");
-        IssueRecord issueRecord = new IssueRecord(1,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         try{
             MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/book/return-book")
                             .contentType("application/json;charset=UTF-8").accept("*/*")

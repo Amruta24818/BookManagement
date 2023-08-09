@@ -82,12 +82,6 @@ public class IssueRecord {
     }
 
     @Override
-    public String toString() {
-        return "IssueRecord [issueRecordId=" + issueRecordId + ", returnDate=" + returnDate + ", issueDate=" + issueDate + ", Amount=" + Amount + ", userId=" + userId + ", bookId=" + bookId + "]";
-    }
-
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

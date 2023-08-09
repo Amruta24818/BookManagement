@@ -55,10 +55,6 @@ public class Book {
         return isbn;
     }
 
-    @Override
-    public String toString() {
-        return "Book [bookId=" + bookId + ", name=" + name + ", subject=" + author + ", price=" + price + ", isbn=" + isbn + "]";
-    }
 
     @Override
     public boolean equals(Object o) {
