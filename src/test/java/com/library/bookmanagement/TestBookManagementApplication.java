@@ -7,8 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TestBookManagementApplication {
 
     @Test
-    void main() {
-        BookManagementApplication.main(String[] );
+    void mainApp() {
+        String[] args = new String[]{"sdsd", "asd"};
+        BookManagementApplication.main(args);
+        assert (true);
     }
 
 }
