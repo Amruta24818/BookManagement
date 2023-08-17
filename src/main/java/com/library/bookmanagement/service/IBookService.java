@@ -1,6 +1,6 @@
-package com.library.service;
+package com.library.bookmanagement.service;
 
-import com.library.model.Book;
+import com.library.bookmanagement.model.Book;
 
 public interface IBookService {
     Book addBook(Book book);

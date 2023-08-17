@@ -1,15 +1,15 @@
 package com.library.bookmanagement.unit;
 
-import com.library.dao.BookRepository;
-import com.library.model.Book;
-import com.library.service.BookServiceImpl;
-import com.library.service.IBookService;
+
+import com.library.bookmanagement.dao.BookRepository;
+import com.library.bookmanagement.model.Book;
+import com.library.bookmanagement.service.BookServiceImpl;
+import com.library.bookmanagement.service.IBookService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -30,7 +30,7 @@ class TestBookService {
 
     @Test
     void PositiveDeleteById() {
-        when(bookRepository.findById(any())).thenAnswer(book -> book.getArguments()[0]);
+        when(bookRepository.findById(any())).thenReturn(null);
 
         doNothing().when(bookRepository).deleteById(anyInt());
 
@@ -70,10 +70,17 @@ class TestBookService {
     }
 
     @Test
+    void NegativeAddBookWith() {
+        when(bookRepository.findByName(any())).thenReturn( new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
+        Book book = new Book(1, "let us c", "Yashvant kanetkar", 256, 125896);
+        assert(null == bookService.addBook(book));
+    }
+
+    @Test
     void NegativeDeleteById() {
-        when(bookRepository.findById(any())).thenReturn(null);
+        when(bookRepository.findById(any())).thenReturn(Optional.of(new Book(1, "let us c", "Yashvant kanetkar", 256, 125896)));
         doNothing().when(bookRepository).deleteById(anyInt());
-        assertTrue(bookService.deleteById(1));
+        assertFalse(bookService.deleteById(1));
     }
 
     @Test

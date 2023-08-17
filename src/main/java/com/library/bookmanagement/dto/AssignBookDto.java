@@ -1,6 +1,6 @@
-package com.library.dto;
+package com.library.bookmanagement.dto;
 
-import com.library.model.User;
+import com.library.bookmanagement.model.User;
 
 public class AssignBookDto {
 
@@ -16,16 +16,10 @@ public class AssignBookDto {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getBookName() {
         return bookName;
     }
 
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
 
 }

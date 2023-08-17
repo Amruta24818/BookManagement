@@ -1,8 +1,8 @@
-package com.library.service;
+package com.library.bookmanagement.service;
 
-import com.library.dto.AssignBookDto;
-import com.library.model.IssueRecord;
-import com.library.model.User;
+import com.library.bookmanagement.dto.AssignBookDto;
+import com.library.bookmanagement.model.IssueRecord;
+import com.library.bookmanagement.model.User;
 
 import java.util.List;
 

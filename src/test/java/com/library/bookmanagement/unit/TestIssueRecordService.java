@@ -1,15 +1,16 @@
 package com.library.bookmanagement.unit;
 
-import com.library.dao.BookRepository;
-import com.library.dao.IssueRecordRepository;
-import com.library.dao.UserRepository;
-import com.library.dto.AssignBookDto;
-import com.library.model.Book;
-import com.library.model.IssueRecord;
-import com.library.model.User;
-import com.library.model.UserRole;
-import com.library.service.IIssueRecordService;
-import com.library.service.IssueRecordServiceImpl;
+
+import com.library.bookmanagement.dao.BookRepository;
+import com.library.bookmanagement.dao.IssueRecordRepository;
+import com.library.bookmanagement.dao.UserRepository;
+import com.library.bookmanagement.dto.AssignBookDto;
+import com.library.bookmanagement.model.Book;
+import com.library.bookmanagement.model.IssueRecord;
+import com.library.bookmanagement.model.User;
+import com.library.bookmanagement.model.UserRole;
+import com.library.bookmanagement.service.IIssueRecordService;
+import com.library.bookmanagement.service.IssueRecordServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ class TestIssueRecordService {
         when(bookRepository.findByName(any())).thenReturn(new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         when(issueRecordRepository.save(any())).thenAnswer(issueRecord -> issueRecord.getArguments()[0]);
 
-        IssueRecord issueRecord = new IssueRecord(null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
+        IssueRecord issueRecord = new IssueRecord(null,null, LocalDate.now(), 0, new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
         AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), issueRecord.getBookId().getName());
         assertEquals(issueRecord, issueRecordService.assignBook(bookDto));
     }
@@ -76,6 +77,23 @@ class TestIssueRecordService {
     @Test
     void NegativeAssignBook() {
         when(userRepository.findById(any())).thenReturn(null);
+        when(bookRepository.findByName(any())).thenReturn(null);
+
+        AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");
+        assert(null == issueRecordService.assignBook(bookDto));
+    }
+
+    @Test
+    void NegativeAssignBookWith() {
+        when(userRepository.findById(any())).thenReturn(null);
+        when(bookRepository.findByName(any())).thenReturn(new Book(1, "let us c", "Yashvant kanetkar", 256, 125896));
+
+        AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");
+        assert(null == issueRecordService.assignBook(bookDto));
+    }
+    @Test
+    void NegativeAssignBookWithAnother() {
+        when(userRepository.findById(any())).thenReturn(Optional.of(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER)));
         when(bookRepository.findByName(any())).thenReturn(null);
 
         AssignBookDto bookDto = new AssignBookDto(new User(1, "Shubham", "shubham@gmail.com", "shubham", "789654123", UserRole.USER), "let us c");

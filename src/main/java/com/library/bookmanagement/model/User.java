@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.bookmanagement.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -77,11 +77,6 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return "User [userId=" + userId + ", name=" + name + ", email=" + email + ", password=" + password + ", mobNo=" + mobNo + ", role=" + role + "]";
     }
 
     @Override

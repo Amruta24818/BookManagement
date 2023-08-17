@@ -1,4 +1,4 @@
-package com.library.dto;
+package com.library.bookmanagement.dto;
 
 public class LoginDto {
     private String email;
@@ -12,13 +12,6 @@ public class LoginDto {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public LoginDto(String email, String password) {
         this.email = email;

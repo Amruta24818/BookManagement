@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.bookmanagement.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,15 +31,6 @@ public class IssueRecord {
     @JoinColumn(name = "bookId")
     private Book bookId;
 
-    public IssueRecord(LocalDate returnDate, LocalDate issueDate, Integer amount, User userId, Book bookId) {
-        super();
-        this.returnDate = returnDate;
-        this.issueDate = issueDate;
-        Amount = amount;
-        this.userId = userId;
-        this.bookId = bookId;
-    }
-
     public IssueRecord(Integer issueRecordId, LocalDate returnDate, LocalDate issueDate, Integer amount, User userId, Book bookId) {
         super();
         this.issueRecordId = issueRecordId;
@@ -52,6 +43,14 @@ public class IssueRecord {
 
     public IssueRecord() {
         super();
+    }
+
+    public Integer getIssueRecordId() {
+        return issueRecordId;
+    }
+
+    public void setIssueRecordId(Integer issueRecordId) {
+        this.issueRecordId = issueRecordId;
     }
 
     public LocalDate getReturnDate() {
@@ -81,12 +80,6 @@ public class IssueRecord {
     public Book getBookId() {
         return bookId;
     }
-
-    @Override
-    public String toString() {
-        return "IssueRecord [issueRecordId=" + issueRecordId + ", returnDate=" + returnDate + ", issueDate=" + issueDate + ", Amount=" + Amount + ", userId=" + userId + ", bookId=" + bookId + "]";
-    }
-
 
     @Override
     public boolean equals(Object o) {
